@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metamorfosis: Las Puertas</title>
+    <style>
+        /* Estilos CSS para tu juego */
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Metamorfosis: Las Puertas</h1>
+        <div id="question"></div>
+        <div id="options">
+            <!-- Aquí se mostrarán las opciones -->
+        </div>
+        <div id="result"></div>
+        <button id="next-button">Siguiente</button>
+    </div>
+
+    <script>
+        // Define los niveles y preguntas
+        const levels = [
+            { question: "¿Qué personaje principal sufre una transformación en un insecto gigante?", options: ["Gregor Samsa", "Grete Samsa", "Herr Samsa"], answer: "Gregor Samsa" },
+            // Define los otros niveles aquí con la misma estructura
+        ];
+
+        let currentLevel = 0;
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const resultElement = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function loadLevel(level) {
+            questionElement.textContent = level.question;
+
+            // Limpia las opciones anteriores
+            optionsElement.innerHTML = "";
+
+            // Agrega las opciones al DOM
+            level.options.forEach((option) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.addEventListener("click", () => checkAnswer(option));
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentLevelData = levels[currentLevel];
+            if (selectedOption === currentLevelData.answer) {
+                resultElement.textContent = "Respuesta correcta. ¡Bien hecho!";
+            } else {
+                resultElement.textContent = "Respuesta incorrecta. La respuesta correcta es: " + currentLevelData.answer;
+            }
+            nextButton.style.display = "block";
+        }
+
+        function nextLevel() {
+            if (currentLevel < levels.length - 1) {
+                currentLevel++;
+                loadLevel(levels[currentLevel]);
+                resultElement.textContent = "";
+                nextButton.style.display = "none";
+            } else {
+                questionElement.textContent = "¡Felicidades! Has completado el juego.";
+                optionsElement.style.display = "none";
+                resultElement.textContent = "";
+                nextButton.style.display = "none";
+            }
+        }
+
+        // Carga el primer nivel
+        loadLevel(levels[currentLevel]);
+        nextButton.addEventListener("click", nextLevel);
+    </script>
+</body>
+</html>
